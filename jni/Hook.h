@@ -3,28 +3,31 @@
 #include <unordered_set>
 #include <unordered_map>
 
-void saveToFile(std::string content) {
-    static bool firstWrite = false;
+void saveToFile(const std::string& content) {
+    static bool wroteHeader = false;
     static std::string packageName(GetPackageName());
-    static std::string filePath = "/storage/emulated/0/Android/data/" + packageName + "/files/HeroSkinData.txt";
-    static std::ofstream file(filePath, std::ios::app);
+    static std::string filePath =
+        "/storage/emulated/0/Android/data/" + packageName + "/files/HeroSkinData.txt";
 
-    if (!firstWrite) {
-        std::ifstream checkFile(filePath);
-        if (checkFile.peek() == std::ifstream::traits_type::eof()) {
-            file << "/*\n"
-                 << "\tCredit\n"
-                 << "\t• Telegram: @TuanMeta\n"
-                 << "\t• Telegram Channel: https://t.me/ZRTChannel\n"
-                 << "\t• Telegram Group: https://t.me/ZRTGroup\n"
-                 << "*/\n";
+    std::ofstream file(filePath, std::ios::app);
+    if (!file.is_open()) return;
+
+    if (!wroteHeader) {
+        std::ifstream check(filePath);
+        if (check.peek() == std::ifstream::traits_type::eof()) {
+            file <<
+                "/*\n"
+                "\tCredit\n"
+                "\t• Telegram: @TuanMeta\n"
+                "\t• Telegram Channel: https://t.me/ZRTChannel\n"
+                "\t• Telegram Group: https://t.me/ZRTGroup\n"
+                "*/\n";
         }
-        firstWrite = true;
+        wroteHeader = true;
     }
 
-    if (file.is_open()) {
-        file << content;
-    }
+    file << content;
+    file.flush();
 }
 
 static String *(*GetHeroName)(uint32_t heroId); //Hero Name
