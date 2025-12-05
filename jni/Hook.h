@@ -33,19 +33,13 @@ void saveToFile(const std::string& content) {
 static String *(*GetHeroName)(uint32_t heroId); //Hero Name
 static String *(*GetSkinName)(uint32_t skinUniId); //Hero Skin
 
-std::unordered_map<std::string, uint32_t> heroNameToId; 
+std::unordered_map<std::string, uint32_t> heroNameToId; // Lưu heroName xuất hiện đầu tiên
 std::unordered_map<uint32_t, std::vector<std::pair<uint32_t, std::string>>> heroSkins;
-std::unordered_set<uint32_t> writtenHeroIds;
-std::unordered_set<uint32_t> dumpedConfigIds;
+std::unordered_set<uint32_t> writtenHeroIds; // Kiểm tra hero đã ghi tiêu đề chưa
 
 void saveHeroData(uintptr_t instance) {
     uint32_t configId = *(uint32_t *)(instance + Field("AovTdr.dll", "ResData", "ResHeroSkin", "dwID"));
-    uint32_t heroId   = *(uint32_t *)(instance + Field("AovTdr.dll", "ResData", "ResHeroSkin", "dwHeroID"));
-
-    // Nếu configId đã dump rồi -> bỏ qua
-    if (!dumpedConfigIds.insert(configId).second) {
-        return;
-    }
+    uint32_t heroId = *(uint32_t *)(instance + Field("AovTdr.dll", "ResData", "ResHeroSkin", "dwHeroID"));
 
     std::string heroName = GetHeroName(heroId)->CString();
     if (heroName.empty() || heroName.find("[ex]") != std::string::npos) return;
@@ -66,14 +60,15 @@ void saveHeroData(uintptr_t instance) {
 
     std::stringstream data;
 
-    // Ghi tiêu đề hero 1 lần
     if (writtenHeroIds.insert(heroId).second) {
         data << "\n" << heroName << " [" << heroId << "]:\n";
     }
 
-    int index = heroSkins[heroId].size(); 
+    // Ghi danh sách skin
+    int index = heroSkins[heroId].size(); // Đếm số skin hiện tại
     data << index << ". " << skinName << " : " << configId << "\n";
 
+    // Ghi vào file
     saveToFile(data.str());
 }
 
