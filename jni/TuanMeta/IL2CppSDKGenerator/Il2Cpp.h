@@ -16,6 +16,7 @@
 #include <iostream>
 #include <vector>
 #include <iterator>
+#include "xdl/include/xdl.h"
 
 using namespace std;
 

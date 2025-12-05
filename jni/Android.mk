@@ -6,7 +6,6 @@ LOCAL_MODULE            := libdobby
 LOCAL_SRC_FILES         := TuanMeta/Tools/Dobby/libraries/$(TARGET_ARCH_ABI)/libdobby.a
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/TuanMeta/Tools/Dobby/
 include $(PREBUILT_STATIC_LIBRARY)
-# ============================================================================#
 
 include $(CLEAR_VARS)
 
@@ -32,10 +31,13 @@ LOCAL_SRC_FILES := Main.cpp \
     KittyMemory/KittyArm64.cpp \
     TuanMeta/IL2CppSDKGenerator/Il2Cpp.cpp \
     TuanMeta/Tools/Tools.cpp \
+    xdl/xdl.c \
+    xdl/xdl_util.c \
+    xdl/xdl_lzma.c \
+    xdl/xdl_linker.c \
+    xdl/xdl_iterate.c \
     
 LOCAL_STATIC_LIBRARIES := libdobby
 LOCAL_CPP_FEATURES     := exceptions
 
 include $(BUILD_SHARED_LIBRARY)
-# ============================================================================
-

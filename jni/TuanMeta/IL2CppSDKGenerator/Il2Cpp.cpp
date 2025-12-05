@@ -78,9 +78,9 @@ int not_found_export = 0;
 
 void *get_export_function(const char *lib, const char *name)
 {
-    void *handle = dlopen(lib, 4);
+    void *handle = xdl_open(lib, 4);
     if(handle) {
-        void *fn = dlsym(handle, name);
+        void *fn = xdl_sym(handle, name, 0);
         if (fn) {
             return fn;
         }

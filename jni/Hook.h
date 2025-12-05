@@ -30,16 +30,13 @@ void saveToFile(std::string content) {
 static String *(*GetHeroName)(uint32_t heroId); //Hero Name
 static String *(*GetSkinName)(uint32_t skinUniId); //Hero Skin
 
-uintptr_t dwID; //field configId, eg: 15000
-uintptr_t dwHeroID; //field HeroId, eg: 150
-
 std::unordered_map<std::string, uint32_t> heroNameToId; // Lưu heroName xuất hiện đầu tiên
 std::unordered_map<uint32_t, std::vector<std::pair<uint32_t, std::string>>> heroSkins;
 std::unordered_set<uint32_t> writtenHeroIds; // Kiểm tra hero đã ghi tiêu đề chưa
 
 void saveHeroData(uintptr_t instance) {
-    uint32_t configId = *(uint32_t *)(instance + dwID);
-    uint32_t heroId = *(uint32_t *)(instance + dwHeroID);
+    uint32_t configId = *(uint32_t *)(instance + Field("AovTdr.dll", "ResData", "ResHeroSkin", "dwID"));
+    uint32_t heroId = *(uint32_t *)(instance + Field("AovTdr.dll", "ResData", "ResHeroSkin", "dwHeroID"));
 
     std::string heroName = GetHeroName(heroId)->CString();
     if (heroName.empty() || heroName.find("[ex]") != std::string::npos) return;
@@ -74,8 +71,7 @@ void saveHeroData(uintptr_t instance) {
 
 int (*_TransferData)(uintptr_t instance, void *trans);
 int TransferData(uintptr_t instance, void *trans) {
-	if (instance != NULL) {
-		saveHeroData(instance);
-	}
-	return _TransferData(instance, trans);
+	auto result = _TransferData(instance, trans);
+	saveHeroData(instance);
+	return result;
 }

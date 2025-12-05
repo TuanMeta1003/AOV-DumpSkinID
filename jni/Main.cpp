@@ -17,10 +17,7 @@ void *Init_Thread() {
 
 	GetHeroName = (String *(*)(uint32_t)) Method("Project_d.dll", "Assets.Scripts.GameSystem", "CHeroInfo", "GetHeroName", 1);
 	GetSkinName = (String *(*)(uint32_t)) Method("Project_d.dll", "Assets.Scripts.GameSystem", "CSkinInfo", "GetSkinName", 1);
-	
 	TuanMetaHook("AovTdr.dll", "ResData", "ResHeroSkin", "TransferData", 1, TransferData, _TransferData);
-	dwID = Field("AovTdr.dll", "ResData", "ResHeroSkin", "dwID");
-	dwHeroID = Field("AovTdr.dll", "ResData", "ResHeroSkin", "dwHeroID");
 	
 	return nullptr;
 }
