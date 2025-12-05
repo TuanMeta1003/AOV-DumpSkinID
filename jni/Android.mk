@@ -19,8 +19,8 @@ LOCAL_LDFLAGS          += -Wl,--gc-sections,--strip-all, -llog
 LOCAL_ARM_MODE         := arm
 LOCAL_LDLIBS           := -llog -landroid -lz
 
-LOCAL_C_INCLUDES       += $(LOCAL_PATH)
 LOCAL_C_INCLUDES       += $(LOCAL_PATH)/TuanMeta
+LOCAL_C_INCLUDES       += $(LOCAL_PATH)/xdl/include
 
 LOCAL_SRC_FILES := Main.cpp \
     KittyMemory/KittyMemory.cpp \
