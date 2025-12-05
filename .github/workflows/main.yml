@@ -25,7 +25,7 @@ jobs:
 
       - name: Download and Install NDK
         run: |
-          export NDK_VERSION=28.0.13004108
+          export NDK_VERSION=29.0.14206865
           sdkmanager "ndk;$NDK_VERSION"
           echo "NDK_ROOT=$ANDROID_SDK_ROOT/ndk/$NDK_VERSION" >> $GITHUB_ENV
           echo "NDK_HOME=$ANDROID_SDK_ROOT/ndk/$NDK_VERSION" >> $GITHUB_ENV
