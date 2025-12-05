@@ -6,10 +6,16 @@ on:
       version:
         description: 'Version for the release (e.g., v1.0.0)'
         required: true
+      do_release:
+        type: boolean
+        description: 'Publish GitHub Release?'
+        required: true
+        default: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -38,16 +44,23 @@ jobs:
             fi
           done
 
+      - name: Upload artifacts (always)
+        uses: actions/upload-artifact@v4
+        with:
+          name: native-libs
+          path: release/*.zip
+
       - name: Create Git Tag
+        if: ${{ inputs.do_release == true }}
         run: |
           git tag -f ${{ github.event.inputs.version }}
           git push --force origin ${{ github.event.inputs.version }}
 
-      - name: Upload release
+      - name: Upload GitHub Release
+        if: ${{ inputs.do_release == true }}
         uses: softprops/action-gh-release@v2
         with:
           files: release/*.zip
           tag_name: ${{ github.event.inputs.version }}
-          body: ""
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
